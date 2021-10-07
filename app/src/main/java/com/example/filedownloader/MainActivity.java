@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private Button startButton;
     private volatile boolean stopThread = false;
     private TextView progress;
+//    this didn't work a while ago, had to log back into Git idk
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

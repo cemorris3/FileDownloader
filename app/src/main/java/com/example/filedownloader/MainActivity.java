@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private Button startButton;
     private volatile boolean stopThread = false;
+    private TextView progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         startButton = findViewById(R.id.start);
+        progress = findViewById(R.id.progress);
     }
 
     public void mockFileDownloader() {
@@ -36,12 +39,20 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         startButton.setText("Start");
+                        progress.setText("");
                     }
                 });
                 return;
             }
 
             Log.d(TAG, "Download Progress: " + downloadProgress + "%");
+            int finalDownloadProgress = downloadProgress;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progress.setText("Download Progress: " + finalDownloadProgress + "%");
+                }
+            });
             try{
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
